@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Plus, Trash2, Inbox, ChevronDown, ChevronRight } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Inbox, ChevronDown, ChevronRight, X } from "lucide-react";
 import { api, Book, Chapter } from "../api";
 import EditableText from "../components/EditableText";
 
@@ -11,6 +11,8 @@ export default function BookDetail() {
   const [chapters, setChapters] = useState<Chapter[] | null>(null);
   const [unsortedCount, setUnsortedCount] = useState(0);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!bookId) return;
@@ -40,11 +42,57 @@ export default function BookDetail() {
     setChapters((prev) => (prev ? prev.filter((c) => c.id !== id) : prev));
   }
 
+  async function deleteBook() {
+    setDeleting(true);
+    try {
+      await api.deleteBook(bookId!);
+      navigate("/");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="max-w-md mx-auto px-5 pt-8">
-      <Link to="/" className="inline-flex items-center gap-1.5 text-ink/50 text-sm mb-6 hover:text-ink">
-        <ArrowLeft size={15} /> Shelf
-      </Link>
+      <div className="flex items-center justify-between mb-6">
+        <Link to="/" className="inline-flex items-center gap-1.5 text-ink/50 text-sm hover:text-ink">
+          <ArrowLeft size={15} /> Shelf
+        </Link>
+        {!confirmingDelete && (
+          <button
+            onClick={() => setConfirmingDelete(true)}
+            className="text-ink/30 hover:text-red-600 transition-colors"
+            aria-label="Delete book"
+          >
+            <Trash2 size={15} />
+          </button>
+        )}
+      </div>
+
+      {confirmingDelete && (
+        <div className="flex items-center justify-between gap-3 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-6">
+          <span className="text-sm text-red-800">
+            Delete "{book?.title}"? This removes every chapter and fragment in it — permanently.
+          </span>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={deleteBook}
+              disabled={deleting}
+              className="text-xs font-medium bg-red-600 text-white px-3 py-1.5 rounded-full hover:bg-red-700 disabled:opacity-50"
+            >
+              {deleting ? "Deleting…" : "Delete"}
+            </button>
+            <button
+              onClick={() => setConfirmingDelete(false)}
+              disabled={deleting}
+              className="text-ink/40 hover:text-ink"
+              aria-label="Cancel"
+            >
+              <X size={15} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {book && (
         <header className="mb-6">
