@@ -12,9 +12,9 @@ binding = "ASSETS"
 not_found_handling = "single-page-application"
 
 [[d1_databases]]
-binding = "DB"
+binding = "scribblewriter_db"
 database_name = "scribblewriter-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "c59a848b-6933-40c4-8954-e07f7725319f"
 
 # Secrets (set via `wrangler secret put`, not in this file):
 #   ANTHROPIC_API_KEY   - server-side key for AI placement calls
