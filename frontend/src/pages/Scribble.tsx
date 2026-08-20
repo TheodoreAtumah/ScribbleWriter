@@ -1,20 +1,35 @@
-import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, Trash2, Check, X, Loader2 } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { ArrowLeft, Sparkles, Trash2, Check, X, Loader2, ChevronDown } from "lucide-react";
 import { api, Book, Fragment, Chapter, PlacementProposal, ApiError } from "../api";
 
 export default function Scribble() {
   const { bookId } = useParams<{ bookId: string }>();
+  const navigate = useNavigate();
   const [book, setBook] = useState<Book | null>(null);
+  const [allBooks, setAllBooks] = useState<Book[]>([]);
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [fragments, setFragments] = useState<Fragment[] | null>(null);
   const [draft, setDraft] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const pickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!bookId) return;
     api.getBook(bookId).then((res) => setBook(res.book));
+    api.listBooks().then((res) => setAllBooks(res.books));
     refreshFragments();
   }, [bookId]);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
+        setPickerOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
 
   function refreshFragments() {
     if (!bookId) return;
@@ -55,14 +70,51 @@ export default function Scribble() {
         <ArrowLeft size={15} /> {book?.title ?? "Back"}
       </Link>
 
-      <header className="mb-6">
-  <h1 className="font-serif text-2xl text-ink">Scribble</h1>
-  {book && (
-    <p className="text-brass-dark text-sm font-medium mt-0.5">for {book.title}</p>
-  )}
-  <p className="text-ink/50 text-sm mt-2">
-    Drop anything here — a line, a memory, a half-formed idea. Sort it into the book when you're ready.
-  </p>
+            <header className="mb-6">
+        <h1 className="font-serif text-2xl text-ink">Scribble</h1>
+        {book && (
+          <div className="relative inline-block mt-0.5" ref={pickerRef}>
+            <button
+              onClick={() => setPickerOpen((o) => !o)}
+              className="flex items-center gap-1 text-brass-dark text-sm font-medium hover:text-ink transition-colors"
+            >
+              for {book.title}
+              <ChevronDown size={13} className={`transition-transform ${pickerOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {pickerOpen && (
+              <div className="absolute left-0 top-full mt-1 w-64 bg-white border border-ink/10 rounded-lg shadow-book py-1.5 z-20">
+                {allBooks.map((b) => (
+                  <button
+                    key={b.id}
+                    onClick={() => {
+                      setPickerOpen(false);
+                      if (b.id !== bookId) navigate(`/scribble/${b.id}`);
+                    }}
+                    className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-paper-soft transition-colors ${
+                      b.id === bookId ? "text-ink font-medium" : "text-ink/60"
+                    }`}
+                  >
+                    {b.title}
+                    {b.id === bookId && <Check size={13} className="text-brass-dark shrink-0" />}
+                  </button>
+                ))}
+                <div className="border-t border-ink/10 mt-1 pt-1">
+                  <Link
+                    to="/"
+                    onClick={() => setPickerOpen(false)}
+                    className="block px-3 py-2 text-xs text-ink/40 hover:text-ink"
+                  >
+                    View all books on Shelf →
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        <p className="text-ink/50 text-sm mt-2">
+          Drop anything here — a line, a memory, a half-formed idea. Sort it into the book when you're ready.
+        </p>
 </header>
 
       <div className="bg-white border border-ink/10 rounded-lg p-3 mb-8">
