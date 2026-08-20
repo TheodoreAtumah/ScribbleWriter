@@ -56,11 +56,14 @@ export default function Scribble() {
       </Link>
 
       <header className="mb-6">
-        <h1 className="font-serif text-2xl text-ink">Scribble</h1>
-        <p className="text-ink/50 text-sm mt-1">
-          Drop anything here — a line, a memory, a half-formed idea. Sort it into the book when you're ready.
-        </p>
-      </header>
+  <h1 className="font-serif text-2xl text-ink">Scribble</h1>
+  {book && (
+    <p className="text-brass-dark text-sm font-medium mt-0.5">for {book.title}</p>
+  )}
+  <p className="text-ink/50 text-sm mt-2">
+    Drop anything here — a line, a memory, a half-formed idea. Sort it into the book when you're ready.
+  </p>
+</header>
 
       <div className="bg-white border border-ink/10 rounded-lg p-3 mb-8">
         <textarea
