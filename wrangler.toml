@@ -12,7 +12,7 @@ binding = "ASSETS"
 not_found_handling = "single-page-application"
 
 [[d1_databases]]
-binding = "scribblewriter_db"
+binding = "DB"
 database_name = "scribblewriter-db"
 database_id = "c59a848b-6933-40c4-8954-e07f7725319f"
 
