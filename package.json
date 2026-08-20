@@ -1,0 +1,19 @@
+{
+  "name": "scribblewriter",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "dev:worker": "npm run build:frontend && wrangler dev",
+    "deploy": "npm run build:frontend && wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply scribblewriter-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply scribblewriter-db --remote"
+  },
+  "workspaces": [
+    "frontend"
+  ],
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}
