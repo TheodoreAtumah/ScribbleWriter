@@ -5,7 +5,7 @@ import type { Env, Variables, FragmentRow, ChapterRow, VoiceProfileRow, BookRow 
 const ai = new Hono<{ Bindings: Env; Variables: Variables }>();
 ai.use("*", requireAuth);
 
-const MODEL = "claude-sonnet-4-6";
+const MODEL = "claude-sonnet-5";
 
 interface PlacementProposal {
   targetChapterId: string | null;
