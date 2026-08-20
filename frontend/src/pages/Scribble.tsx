@@ -161,6 +161,7 @@ function FragmentCard({
   const [error, setError] = useState<string | null>(null);
   const [committing, setCommitting] = useState(false);
   const [editedText, setEditedText] = useState("");
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   async function requestPlacement() {
     setProposing(true);
@@ -202,9 +203,31 @@ function FragmentCard({
       <div className="flex items-start justify-between gap-3">
         <p className={`text-sm whitespace-pre-wrap flex-1 ${muted ? "text-ink/50" : "text-ink"}`}>{fragment.text}</p>
         {!fragment.sorted && (
-          <button onClick={() => onDelete(fragment.id)} className="text-ink/25 hover:text-red-600 shrink-0">
-            <Trash2 size={14} />
-          </button>
+          confirmingDelete ? (
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => onDelete(fragment.id)}
+                className="text-[11px] font-medium text-red-700 hover:text-red-800"
+              >
+                Delete?
+              </button>
+              <button
+                onClick={() => setConfirmingDelete(false)}
+                className="text-ink/40 hover:text-ink"
+                aria-label="Cancel delete"
+              >
+                <X size={13} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setConfirmingDelete(true)}
+              className="text-ink/25 hover:text-red-600 shrink-0"
+              aria-label="Delete fragment"
+            >
+              <Trash2 size={14} />
+            </button>
+          )
         )}
       </div>
 

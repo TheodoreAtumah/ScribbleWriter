@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Plus, Trash2, Inbox, ChevronDown, ChevronRight, X } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Inbox, ChevronDown, ChevronRight, ChevronUp, ChevronDown as ChevronDownMove, X } from "lucide-react";
 import { api, Book, Chapter } from "../api";
 import EditableText from "../components/EditableText";
 
@@ -40,6 +40,24 @@ export default function BookDetail() {
   async function deleteChapter(id: string) {
     await api.deleteChapter(id);
     setChapters((prev) => (prev ? prev.filter((c) => c.id !== id) : prev));
+  }
+
+  async function moveChapter(id: string, direction: "up" | "down") {
+    if (!chapters) return;
+    const index = chapters.findIndex((c) => c.id === id);
+    const swapWith = direction === "up" ? index - 1 : index + 1;
+    if (index === -1 || swapWith < 0 || swapWith >= chapters.length) return;
+
+    const reordered = [...chapters];
+    [reordered[index], reordered[swapWith]] = [reordered[swapWith], reordered[index]];
+    setChapters(reordered); // optimistic
+
+    const order = reordered.map((c, i) => ({ id: c.id, order: i }));
+    try {
+      await api.reorderChapters(bookId!, order);
+    } catch {
+      setChapters(chapters); // revert on failure
+    }
   }
 
   async function deleteBook() {
@@ -162,10 +180,13 @@ export default function BookDetail() {
               key={ch.id}
               chapter={ch}
               index={i}
+              total={chapters.length}
               open={!!expanded[ch.id]}
               onToggle={() => setExpanded((e) => ({ ...e, [ch.id]: !e[ch.id] }))}
               onUpdate={updateChapterField}
               onDelete={() => deleteChapter(ch.id)}
+              onMoveUp={() => moveChapter(ch.id, "up")}
+              onMoveDown={() => moveChapter(ch.id, "down")}
             />
           ))}
         </div>
@@ -177,17 +198,23 @@ export default function BookDetail() {
 function ChapterCard({
   chapter,
   index,
+  total,
   open,
   onToggle,
   onUpdate,
   onDelete,
+  onMoveUp,
+  onMoveDown,
 }: {
   chapter: Chapter;
   index: number;
+  total: number;
   open: boolean;
   onToggle: () => void;
   onUpdate: (id: string, field: "title" | "summary" | "body", value: string) => void;
   onDelete: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
 }) {
   return (
     <div className="bg-white border border-ink/10 rounded-lg overflow-hidden">
@@ -202,9 +229,27 @@ function ChapterCard({
           className="font-serif text-base text-ink flex-1"
           placeholder="Untitled Chapter"
         />
-        <button onClick={onDelete} className="text-ink/25 hover:text-red-600 shrink-0">
-          <Trash2 size={14} />
-        </button>
+        <div className="flex items-center gap-0.5 shrink-0">
+          <button
+            onClick={onMoveUp}
+            disabled={index === 0}
+            className="text-ink/25 hover:text-ink disabled:opacity-20 disabled:hover:text-ink/25 p-0.5"
+            aria-label="Move chapter up"
+          >
+            <ChevronUp size={14} />
+          </button>
+          <button
+            onClick={onMoveDown}
+            disabled={index === total - 1}
+            className="text-ink/25 hover:text-ink disabled:opacity-20 disabled:hover:text-ink/25 p-0.5"
+            aria-label="Move chapter down"
+          >
+            <ChevronDownMove size={14} />
+          </button>
+          <button onClick={onDelete} className="text-ink/25 hover:text-red-600 ml-1" aria-label="Delete chapter">
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
 
       {open && (
