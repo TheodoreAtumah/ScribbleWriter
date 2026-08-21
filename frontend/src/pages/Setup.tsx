@@ -104,7 +104,7 @@ export default function Setup() {
         <h2 className="text-xs uppercase tracking-[0.15em] text-ink/40 font-medium mb-3">Account</h2>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2 justify-center border border-ink/10 rounded-lg py-3 text-sm text-ink/60 hover:border-red-300 hover:text-red-700 transition-colors"
+          className="w-full flex items-center gap-2 justify-center border border-ink/10 rounded-lg py-3 text-sm text-ink/60 hover:border-danger/40 hover:text-danger transition-colors"
         >
           <LogOut size={15} /> Sign out
         </button>

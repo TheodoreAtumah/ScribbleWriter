@@ -49,7 +49,7 @@ export default function NavBar() {
           <button
             onClick={() => navigate("/")}
             className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
-              onShelf ? "bg-brass text-ink" : "text-paper hover:bg-paper/10"
+              onShelf ? "bg-white/10 text-paper" : "text-paper/50 hover:text-paper hover:bg-white/5"
             }`}
           >
             <BookOpen size={16} />
@@ -59,7 +59,7 @@ export default function NavBar() {
           <button
             onClick={goToScribble}
             className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
-              onScribble ? "bg-brass text-ink" : "text-paper hover:bg-paper/10"
+              onScribble ? "bg-white/10 text-paper" : "text-paper/50 hover:text-paper hover:bg-white/5"
             }`}
           >
             <PenLine size={16} />

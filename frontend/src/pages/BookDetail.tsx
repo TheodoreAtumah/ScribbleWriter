@@ -79,7 +79,7 @@ export default function BookDetail() {
         {!confirmingDelete && (
           <button
             onClick={() => setConfirmingDelete(true)}
-            className="text-ink/30 hover:text-red-600 transition-colors"
+            className="text-ink/30 hover:text-danger transition-colors"
             aria-label="Delete book"
           >
             <Trash2 size={15} />
@@ -88,15 +88,15 @@ export default function BookDetail() {
       </div>
 
       {confirmingDelete && (
-        <div className="flex items-center justify-between gap-3 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-6">
-          <span className="text-sm text-red-800">
+        <div className="flex items-center justify-between gap-3 bg-danger-soft border border-danger-border rounded-lg px-4 py-3 mb-6">
+          <span className="text-sm text-danger-dark">
             Delete "{book?.title}"? This removes every chapter and fragment in it — permanently.
           </span>
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={deleteBook}
               disabled={deleting}
-              className="text-xs font-medium bg-red-600 text-white px-3 py-1.5 rounded-full hover:bg-red-700 disabled:opacity-50"
+              className="text-xs font-medium bg-danger text-white px-3 py-1.5 rounded-full hover:bg-danger-dark disabled:opacity-50"
             >
               {deleting ? "Deleting…" : "Delete"}
             </button>
@@ -246,7 +246,7 @@ function ChapterCard({
           >
             <ChevronDownMove size={14} />
           </button>
-          <button onClick={onDelete} className="text-ink/25 hover:text-red-600 ml-1" aria-label="Delete chapter">
+          <button onClick={onDelete} className="text-ink/25 hover:text-danger ml-1" aria-label="Delete chapter">
             <Trash2 size={14} />
           </button>
         </div>

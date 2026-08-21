@@ -71,7 +71,7 @@ export default function Scribble() {
         <ArrowLeft size={15} /> {book?.title ?? "Back"}
       </Link>
 
-            <header className="mb-6">
+      <header className="mb-6">
         <h1 className="font-serif text-2xl text-ink">Scribble</h1>
         {book && (
           <div className="relative inline-block mt-0.5" ref={pickerRef}>
@@ -116,9 +116,9 @@ export default function Scribble() {
         <p className="text-ink/50 text-sm mt-2">
           Drop anything here — a line, a memory, a half-formed idea. Sort it into the book when you're ready.
         </p>
-</header>
+      </header>
 
-            <div className="flex items-center gap-1 mb-3 bg-ink/5 rounded-full p-1 w-fit">
+      <div className="flex items-center gap-1 mb-3 bg-ink/5 rounded-full p-1 w-fit">
         <button
           onClick={() => setCaptureMode("type")}
           className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${
@@ -291,7 +291,7 @@ function FragmentCard({
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => onDelete(fragment.id)}
-                className="text-[11px] font-medium text-red-700 hover:text-red-800"
+                className="text-[11px] font-medium text-danger hover:text-danger-dark"
               >
                 Delete?
               </button>
@@ -306,7 +306,7 @@ function FragmentCard({
           ) : (
             <button
               onClick={() => setConfirmingDelete(true)}
-              className="text-ink/25 hover:text-red-600 shrink-0"
+              className="text-ink/25 hover:text-danger shrink-0"
               aria-label="Delete fragment"
             >
               <Trash2 size={14} />
@@ -329,7 +329,7 @@ function FragmentCard({
         )}
       </div>
 
-      {error && <p className="text-xs text-red-700 mt-2">{error}</p>}
+      {error && <p className="text-xs text-danger-dark mt-2">{error}</p>}
 
       {proposal && (
         <div className="mt-4 pt-4 border-t border-ink/10 space-y-3">

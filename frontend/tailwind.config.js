@@ -22,6 +22,14 @@ export default {
           light: "#D3B382",
           dark: "#96754A",
         },
+        // Muted system-red for destructive actions — desaturated to sit
+        // quietly against the warm paper base rather than shout.
+        danger: {
+          DEFAULT: "#C4453D",
+          soft: "#FBEAE8",
+          border: "#EFCAC6",
+          dark: "#A2372F",
+        },
       },
       fontFamily: {
         serif: ["'Fraunces'", "serif"],

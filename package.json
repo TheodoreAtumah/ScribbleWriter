@@ -11,10 +11,10 @@
     "db:migrate:remote": "wrangler d1 migrations apply scribblewriter-db --remote"
   },
   "workspaces": [
-  "frontend",
-  "worker"
-],
+    "frontend",
+    "worker"
+  ],
   "devDependencies": {
-    "wrangler": "^3.90.0"
+    "wrangler": "^4.124.0"
   }
 }
