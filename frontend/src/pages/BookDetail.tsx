@@ -159,7 +159,7 @@ export default function BookDetail() {
       {chapters === null ? (
         <p className="text-ink/40 text-sm">Loading chapters…</p>
       ) : chapters.length === 0 ? (
-        <div className="text-center py-14 border-2 border-dashed border-ink/10 rounded-lg">
+        <div className="text-center py-14 border border-ink/10 rounded-lg">
           <p className="text-ink/40 text-sm mb-4 max-w-[18rem] mx-auto">
             No chapters yet. Add one, or place a fragment from Scribble and we'll create one for you.
           </p>
@@ -229,22 +229,26 @@ function ChapterCard({
           placeholder="Untitled Chapter"
         />
         <div className="flex items-center gap-0.5 shrink-0">
-          <button
-            onClick={onMoveUp}
-            disabled={index === 0}
-            className="text-ink/25 hover:text-ink disabled:opacity-20 disabled:hover:text-ink/25 p-0.5"
-            aria-label="Move chapter up"
-          >
-            <ChevronUp size={14} />
-          </button>
-          <button
-            onClick={onMoveDown}
-            disabled={index === total - 1}
-            className="text-ink/25 hover:text-ink disabled:opacity-20 disabled:hover:text-ink/25 p-0.5"
-            aria-label="Move chapter down"
-          >
-            <ChevronDownMove size={14} />
-          </button>
+          {total > 1 && (
+            <>
+              <button
+                onClick={onMoveUp}
+                disabled={index === 0}
+                className="text-ink/25 hover:text-ink disabled:opacity-20 disabled:hover:text-ink/25 p-0.5"
+                aria-label="Move chapter up"
+              >
+                <ChevronUp size={14} />
+              </button>
+              <button
+                onClick={onMoveDown}
+                disabled={index === total - 1}
+                className="text-ink/25 hover:text-ink disabled:opacity-20 disabled:hover:text-ink/25 p-0.5"
+                aria-label="Move chapter down"
+              >
+                <ChevronDownMove size={14} />
+              </button>
+            </>
+          )}
           {confirmingDelete ? (
             <div className="flex items-center gap-1.5 ml-1">
               <button

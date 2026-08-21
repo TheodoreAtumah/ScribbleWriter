@@ -26,11 +26,8 @@ export default function Shelf() {
     <div className="max-w-md mx-auto px-5 pt-10">
       <header className="mb-8">
         <h1 className="font-serif text-3xl text-ink leading-tight">
-          Here, your fragments
-          <br />
-          become a book
+          Write On The Fly
         </h1>
-        <p className="text-ink/50 text-sm mt-2">Write On The Fly!</p>
       </header>
 
       {books === null ? (
@@ -45,10 +42,10 @@ export default function Shelf() {
           <button
             onClick={createBook}
             disabled={creating}
-            className="aspect-[3/4] rounded-lg border-2 border-dashed border-ink/15 flex flex-col items-center justify-center gap-2 text-ink/40 hover:border-brass hover:text-brass-dark transition-colors"
+            aria-label="New book"
+            className="aspect-[3/4] rounded-lg border border-ink/10 flex items-center justify-center text-ink/25 hover:border-brass hover:text-brass-dark transition-colors"
           >
-            <Plus size={22} />
-            <span className="text-xs font-medium">New Book</span>
+            <Plus size={24} />
           </button>
         </div>
       )}
@@ -74,7 +71,7 @@ function BookCover({ book, onClick }: { book: Book; onClick: () => void }) {
 function EmptyShelf({ onCreate, creating }: { onCreate: () => void; creating: boolean }) {
   return (
     <div className="text-center py-16">
-      <div className="w-40 h-52 mx-auto rounded-lg bg-ink/5 border-2 border-dashed border-ink/15 flex items-center justify-center mb-6">
+      <div className="w-40 h-52 mx-auto rounded-lg bg-ink/5 border border-ink/10 flex items-center justify-center mb-6">
         <Puzzle size={28} className="text-ink/20" />
       </div>
       <p className="text-ink/50 text-sm mb-5 max-w-[22rem] mx-auto">
