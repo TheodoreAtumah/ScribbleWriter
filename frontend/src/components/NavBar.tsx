@@ -44,22 +44,28 @@ export default function NavBar() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-30 pb-6 pt-3 px-4 bg-gradient-to-t from-paper via-paper to-transparent">
       <div className="max-w-md mx-auto flex items-center gap-3">
-        {/* Books / Scribble — merged pill, the two content zones */}
-        <div className="flex-1 h-14 rounded-full bg-ink shadow-book flex overflow-hidden">
+        {/* Books / Scribble — segmented control, echoing the Type/Record
+            toggle inside Scribble: a recessed track with a raised, softly
+            lit thumb behind the active option, rather than a flat color
+            swap. */}
+        <div className="relative flex-1 h-14 rounded-full bg-ink shadow-book p-1.5 flex">
+          <div
+            className="absolute top-1.5 bottom-1.5 w-[calc(50%-0.375rem)] rounded-full bg-ink-soft shadow-[0_1px_3px_rgba(0,0,0,0.3)] transition-transform duration-200 ease-out"
+            style={{ transform: onScribble ? "translateX(calc(100% + 0.375rem))" : "translateX(0)" }}
+          />
           <button
             onClick={() => navigate("/")}
-            className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
-              onShelf ? "bg-white/10 text-paper" : "text-paper/50 hover:text-paper hover:bg-white/5"
+            className={`relative z-10 flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
+              onShelf ? "text-paper" : "text-paper/45 hover:text-paper/70"
             }`}
           >
             <BookOpen size={16} />
             Books
           </button>
-          <div className="w-px bg-paper/10 my-3" />
           <button
             onClick={goToScribble}
-            className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
-              onScribble ? "bg-white/10 text-paper" : "text-paper/50 hover:text-paper hover:bg-white/5"
+            className={`relative z-10 flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
+              onScribble ? "text-paper" : "text-paper/45 hover:text-paper/70"
             }`}
           >
             <PenLine size={16} />

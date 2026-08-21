@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Puzzle } from "lucide-react";
 import { api, Book } from "../api";
-import { useAuth } from "../AuthContext";
 
 export default function Shelf() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [books, setBooks] = useState<Book[] | null>(null);
   const [creating, setCreating] = useState(false);
 
@@ -27,7 +25,6 @@ export default function Shelf() {
   return (
     <div className="max-w-md mx-auto px-5 pt-10">
       <header className="mb-8">
-        <p className="text-ink/40 text-xs tracking-[0.2em] uppercase mb-1">{user?.email}</p>
         <h1 className="font-serif text-3xl text-ink leading-tight">
           Here, your fragments
           <br />

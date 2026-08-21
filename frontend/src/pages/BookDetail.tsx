@@ -17,10 +17,7 @@ export default function BookDetail() {
   useEffect(() => {
     if (!bookId) return;
     api.getBook(bookId).then((res) => setBook(res.book));
-    api.listChapters(bookId).then((res) => {
-      setChapters(res.chapters);
-      if (res.chapters[0]) setExpanded({ [res.chapters[0].id]: true });
-    });
+    api.listChapters(bookId).then((res) => setChapters(res.chapters));
     api.listFragments(bookId).then((res) => setUnsortedCount(res.fragments.filter((f) => !f.sorted).length));
   }, [bookId]);
 
@@ -216,6 +213,8 @@ function ChapterCard({
   onMoveUp: () => void;
   onMoveDown: () => void;
 }) {
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+
   return (
     <div className="bg-white border border-ink/10 rounded-lg overflow-hidden">
       <div className="flex items-center gap-2 px-4 py-3">
@@ -246,9 +245,31 @@ function ChapterCard({
           >
             <ChevronDownMove size={14} />
           </button>
-          <button onClick={onDelete} className="text-ink/25 hover:text-danger ml-1" aria-label="Delete chapter">
-            <Trash2 size={14} />
-          </button>
+          {confirmingDelete ? (
+            <div className="flex items-center gap-1.5 ml-1">
+              <button
+                onClick={onDelete}
+                className="text-[11px] font-medium text-danger hover:text-danger-dark"
+              >
+                Delete?
+              </button>
+              <button
+                onClick={() => setConfirmingDelete(false)}
+                className="text-ink/40 hover:text-ink"
+                aria-label="Cancel delete"
+              >
+                <X size={13} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setConfirmingDelete(true)}
+              className="text-ink/25 hover:text-danger ml-1"
+              aria-label="Delete chapter"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
         </div>
       </div>
 
