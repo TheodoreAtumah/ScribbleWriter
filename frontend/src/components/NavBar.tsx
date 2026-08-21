@@ -46,17 +46,28 @@ export default function NavBar() {
       <div className="max-w-md mx-auto flex items-center gap-3">
         {/* Books / Scribble — segmented control, echoing the Type/Record
             toggle inside Scribble: a recessed track with a raised, softly
-            lit thumb behind the active option, rather than a flat color
-            swap. */}
-        <div className="relative flex-1 h-14 rounded-full bg-ink shadow-book p-1.5 flex">
+            lit thumb behind the active option. When Setup is active, this
+            whole pill recedes to a faint outline instead of competing with
+            it, so only one control ever reads as "the current one". */}
+        <div
+          className={`relative flex-1 h-14 rounded-full p-1.5 flex transition-colors duration-200 ${
+            onSetup ? "bg-transparent border border-ink/10" : "bg-ink shadow-book"
+          }`}
+        >
           <div
-            className="absolute top-1.5 bottom-1.5 w-[calc(50%-0.375rem)] rounded-full bg-ink-soft shadow-[0_1px_3px_rgba(0,0,0,0.3)] transition-transform duration-200 ease-out"
+            className={`absolute top-1.5 bottom-1.5 w-[calc(50%-0.375rem)] rounded-full transition-all duration-200 ease-out ${
+              onSetup ? "bg-transparent shadow-none" : "bg-ink-soft shadow-[0_1px_3px_rgba(0,0,0,0.3)]"
+            }`}
             style={{ transform: onScribble ? "translateX(calc(100% + 0.375rem))" : "translateX(0)" }}
           />
           <button
             onClick={() => navigate("/")}
             className={`relative z-10 flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
-              onShelf ? "text-paper" : "text-paper/45 hover:text-paper/70"
+              onSetup
+                ? "text-ink/30 hover:text-ink/50"
+                : onShelf
+                ? "text-paper"
+                : "text-paper/45 hover:text-paper/70"
             }`}
           >
             <BookOpen size={16} />
@@ -65,7 +76,11 @@ export default function NavBar() {
           <button
             onClick={goToScribble}
             className={`relative z-10 flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
-              onScribble ? "text-paper" : "text-paper/45 hover:text-paper/70"
+              onSetup
+                ? "text-ink/30 hover:text-ink/50"
+                : onScribble
+                ? "text-paper"
+                : "text-paper/45 hover:text-paper/70"
             }`}
           >
             <PenLine size={16} />
