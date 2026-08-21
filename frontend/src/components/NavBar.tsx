@@ -73,13 +73,15 @@ export default function NavBar() {
           </button>
         </div>
 
-        {/* Setup — isolated, on the right */}
+        {/* Setup — isolated, on the right. Active state stays a quiet,
+            neutral tint (no brass, no full-ink fill) so it never reads
+            as the same control as the Books/Scribble segmented pill. */}
         <button
           onClick={() => navigate("/setup")}
           aria-label="Setup"
           className={`shrink-0 w-14 h-14 rounded-full flex items-center justify-center border transition-colors ${
             onSetup
-              ? "bg-ink text-paper border-ink"
+              ? "bg-ink/10 text-ink border-ink/30"
               : "bg-paper text-ink border-ink/15 shadow-book hover:border-ink/30"
           }`}
         >
