@@ -69,7 +69,7 @@ export default function Setup() {
 
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="w-full flex items-center justify-center gap-2 border-2 border-dashed border-ink/15 rounded-lg py-4 text-sm text-ink/50 hover:border-brass hover:text-brass-dark transition-colors"
+          className="w-full flex items-center justify-center gap-2 border border-ink/10 rounded-lg py-4 text-sm text-ink/50 hover:border-brass hover:text-brass-dark transition-colors"
         >
           <UploadCloud size={16} />
           Or upload a .txt file instead

@@ -26,8 +26,11 @@ export default function Shelf() {
     <div className="max-w-md mx-auto px-5 pt-10">
       <header className="mb-8">
         <h1 className="font-serif text-3xl text-ink leading-tight">
-          Write On The Fly
+          Here, your fragments
+          <br />
+          become a book
         </h1>
+        <p className="text-ink/50 text-sm mt-2">Write On The Fly!</p>
       </header>
 
       {books === null ? (

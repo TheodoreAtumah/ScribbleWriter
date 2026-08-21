@@ -140,7 +140,7 @@ export default function Scribble() {
       </div>
 
       {captureMode === "record" ? (
-        <div className="bg-white border border-dashed border-ink/15 rounded-lg p-6 mb-8 text-center">
+        <div className="bg-white border border-ink/10 rounded-lg p-6 mb-8 text-center">
           <Mic size={20} className="text-ink/25 mx-auto mb-2" />
           <p className="text-ink/40 text-sm">Voice capture is coming soon.</p>
         </div>
