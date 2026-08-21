@@ -50,8 +50,9 @@ export default function NavBar() {
             swap. */}
         <div className="relative flex-1 h-14 rounded-full bg-ink shadow-book p-1.5 flex">
           <div
-            className="absolute top-1.5 left-1.5 bottom-1.5 w-[calc(50%-0.375rem)] rounded-full bg-ink-soft shadow-[0_1px_3px_rgba(0,0,0,0.3)] transition-transform duration-200 ease-out"
-            style={{ transform: onScribble ? "translateX(calc(100% + 0.75rem))" : "translateX(0)" }}
+            className={`absolute top-1.5 bottom-1.5 w-[calc(50%-0.375rem)] rounded-full bg-ink-soft shadow-[0_1px_3px_rgba(0,0,0,0.3)] transition-all duration-200 ease-out ${
+              onScribble ? "left-1/2" : "left-1.5"
+            }`}
           />
           <button
             onClick={() => navigate("/")}
