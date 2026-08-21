@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { Mic, Type, SlidersHorizontal, BookOpen } from "lucide-react";
-import { api, Book } from "../api";
+import { PenLine, SlidersHorizontal, BookOpen } from "lucide-react";
+import { api } from "../api";
 
 /**
- * Three-button capture bar, echoing the reference: two actions merged into
- * one pill (Record / Type — both live inside Scribble, since recording is
- * not yet wired to transcription), and Setup isolated on its own to its
- * left, since it's a different kind of action ("configure", not "add").
+ * Two-zone pill (Books / Scribble) plus an isolated Setup button on the
+ * right. Books and Scribble are the app's two content zones; Record and
+ * Type live inside the Scribble page itself as capture modes, not here.
  */
 export default function NavBar() {
   const navigate = useNavigate();
@@ -45,7 +44,30 @@ export default function NavBar() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-30 pb-6 pt-3 px-4 bg-gradient-to-t from-paper via-paper to-transparent">
       <div className="max-w-md mx-auto flex items-center gap-3">
-        {/* Setup — isolated, left side */}
+        {/* Books / Scribble — merged pill, the two content zones */}
+        <div className="flex-1 h-14 rounded-full bg-ink shadow-book flex overflow-hidden">
+          <button
+            onClick={() => navigate("/")}
+            className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
+              onShelf ? "bg-brass text-ink" : "text-paper hover:bg-paper/10"
+            }`}
+          >
+            <BookOpen size={16} />
+            Books
+          </button>
+          <div className="w-px bg-paper/10 my-3" />
+          <button
+            onClick={goToScribble}
+            className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
+              onScribble ? "bg-brass text-ink" : "text-paper hover:bg-paper/10"
+            }`}
+          >
+            <PenLine size={16} />
+            Scribble
+          </button>
+        </div>
+
+        {/* Setup — isolated, on the right */}
         <button
           onClick={() => navigate("/setup")}
           aria-label="Setup"
@@ -57,41 +79,6 @@ export default function NavBar() {
         >
           <SlidersHorizontal size={18} />
         </button>
-
-        {/* Book shelf shortcut */}
-        <button
-          onClick={() => navigate("/")}
-          aria-label="Books"
-          className={`shrink-0 w-14 h-14 rounded-full flex items-center justify-center border transition-colors ${
-            onShelf
-              ? "bg-ink text-paper border-ink"
-              : "bg-paper text-ink border-ink/15 shadow-book hover:border-ink/30"
-          }`}
-        >
-          <BookOpen size={18} />
-        </button>
-
-        {/* Record / Type — merged pill, the Scribble capture entry point */}
-        <div className="flex-1 h-14 rounded-full bg-ink shadow-book flex overflow-hidden">
-          <button
-            disabled
-            title="Voice capture is coming soon"
-            className="flex-1 flex items-center justify-center gap-2 text-paper/40 cursor-not-allowed text-sm font-medium"
-          >
-            <Mic size={16} />
-            Record
-          </button>
-          <div className="w-px bg-paper/10 my-3" />
-          <button
-            onClick={goToScribble}
-            className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium transition-colors ${
-              onScribble ? "bg-brass text-ink" : "text-paper hover:bg-paper/10"
-            }`}
-          >
-            <Type size={16} />
-            Type
-          </button>
-        </div>
       </div>
     </nav>
   );

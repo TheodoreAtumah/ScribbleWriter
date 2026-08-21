@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, Trash2, Check, X, Loader2, ChevronDown } from "lucide-react";
+import { ArrowLeft, Sparkles, Trash2, Check, X, Loader2, ChevronDown, PenLine, Mic } from "lucide-react";
 import { api, Book, Fragment, Chapter, PlacementProposal, ApiError } from "../api";
 
 export default function Scribble() {
@@ -12,6 +12,7 @@ export default function Scribble() {
   const [fragments, setFragments] = useState<Fragment[] | null>(null);
   const [draft, setDraft] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [captureMode, setCaptureMode] = useState<"type" | "record">("type");
   const pickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -117,24 +118,52 @@ export default function Scribble() {
         </p>
 </header>
 
-      <div className="bg-white border border-ink/10 rounded-lg p-3 mb-8">
-        <textarea
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          placeholder="Start typing…"
-          rows={4}
-          className="w-full resize-none outline-none text-sm text-ink placeholder:text-ink/30"
-        />
-        <div className="flex justify-end mt-1">
-          <button
-            onClick={addFragment}
-            disabled={!draft.trim() || submitting}
-            className="bg-ink text-paper text-sm font-medium px-4 py-2 rounded-full disabled:opacity-30 hover:bg-ink-soft transition-colors"
-          >
-            Drop it in
-          </button>
-        </div>
+            <div className="flex items-center gap-1 mb-3 bg-ink/5 rounded-full p-1 w-fit">
+        <button
+          onClick={() => setCaptureMode("type")}
+          className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${
+            captureMode === "type" ? "bg-white text-ink shadow-sm" : "text-ink/50 hover:text-ink"
+          }`}
+        >
+          <PenLine size={13} />
+          Type
+        </button>
+        <button
+          onClick={() => setCaptureMode("record")}
+          className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${
+            captureMode === "record" ? "bg-white text-ink shadow-sm" : "text-ink/50 hover:text-ink"
+          }`}
+        >
+          <Mic size={13} />
+          Record
+        </button>
       </div>
+
+      {captureMode === "record" ? (
+        <div className="bg-white border border-dashed border-ink/15 rounded-lg p-6 mb-8 text-center">
+          <Mic size={20} className="text-ink/25 mx-auto mb-2" />
+          <p className="text-ink/40 text-sm">Voice capture is coming soon.</p>
+        </div>
+      ) : (
+        <div className="bg-white border border-ink/10 rounded-lg p-3 mb-8">
+          <textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder="Start typing…"
+            rows={4}
+            className="w-full resize-none outline-none text-sm text-ink placeholder:text-ink/30"
+          />
+          <div className="flex justify-end mt-1">
+            <button
+              onClick={addFragment}
+              disabled={!draft.trim() || submitting}
+              className="bg-ink text-paper text-sm font-medium px-4 py-2 rounded-full disabled:opacity-30 hover:bg-ink-soft transition-colors"
+            >
+              Drop it in
+            </button>
+          </div>
+        </div>
+      )}
 
       {fragments === null ? (
         <p className="text-ink/40 text-sm">Loading fragments…</p>
